@@ -170,3 +170,13 @@ fatalities <- lm(FATALITIES_rfsi ~ acess + ub_npp + medn_piped_water + KEN_rwi +
 summary(fatalities)
 subtype <- lm(SUBTYPE_RICHNESS_rfsi ~ acess + ub_npp + medn_piped_water + KEN_rwi + medn_underweight + medn_difference_edu, data=as.data.frame(conflict_stack))
 summary(subtype)
+
+#question3
+#identify the most vulnerable areas using overlay analysis
+#raster stack
+econ <- stack(socio_layers)
+econ
+#overlay all socioeconomic layers using sum function
+econ_overlay <- overlay(econ, fun=sum)
+econ_overlay
+plot(econ_overlay, main="Socio economic Vulnerability", legend=TRUE, axes=TRUE)
