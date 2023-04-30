@@ -1,3 +1,6 @@
+#The following code can be found in this github repository
+"**https://github.com/brendachepngetich/Climate-Conflict.git**"
+
 #install packages
 install.packages("ggplot2")
 install.packages("rlist")

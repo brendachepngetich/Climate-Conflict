@@ -1,4 +1,7 @@
 #readme file
+#The following code can be found in this github repository
+**https://github.com/brendachepngetich/Climate-Conflict.git**
+
 **Influence of climate hazards on conflicts in kenya**
 -This repository contains code that is used to carry out spatial analysis for investigating influence of climate hazards on conflicts in kenya
 
