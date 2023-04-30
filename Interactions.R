@@ -153,3 +153,20 @@ underweight <- lm(medn_underweight ~ CDD + NDWS + NT + NWLD + P95 + TR, data=as.
 summary(underweight)
 education <- lm(medn_difference_edu ~ CDD + NDWS + NT + NWLD + P95 + TR, data=as.data.frame(stacked_sc))
 summary(education)
+
+#linear regression for socioeconomic versus conflict
+#merge socioeconomic and conflict raster layers
+conflict_socio <- c(rebuilt_layers,socio_layers)
+conflict_socio
+conflict_stack <- stack(conflict_socio)
+conflict_stack
+actor1 <- lm(ACTOR1_RICHNESS_rfsi ~ acess + ub_npp + medn_piped_water + KEN_rwi + medn_underweight + medn_difference_edu, data=as.data.frame(conflict_stack))
+summary(actor1)
+actor2 <- lm(ACTOR2_RICHNESS_rfsi ~ acess + ub_npp + medn_piped_water + KEN_rwi + medn_underweight + medn_difference_edu, data=as.data.frame(conflict_stack))
+summary(actor2)
+events <- lm(EVENTS_rfsi ~ acess + ub_npp + medn_piped_water + KEN_rwi + medn_underweight + medn_difference_edu, data=as.data.frame(conflict_stack))
+summary(events)
+fatalities <- lm(FATALITIES_rfsi ~ acess + ub_npp + medn_piped_water + KEN_rwi + medn_underweight + medn_difference_edu, data=as.data.frame(conflict_stack))
+summary(fatalities)
+subtype <- lm(SUBTYPE_RICHNESS_rfsi ~ acess + ub_npp + medn_piped_water + KEN_rwi + medn_underweight + medn_difference_edu, data=as.data.frame(conflict_stack))
+summary(subtype)
