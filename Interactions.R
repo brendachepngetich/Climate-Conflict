@@ -102,3 +102,54 @@ FATALITIES_rfsi <- lm(FATALITIES_rfsi ~ CDD + NDWS + NT + NWLD + P95 + TR, data=
 summary(FATALITIES_rfsi)
 SUBTYPE_RICHNESS_rfsi <- lm(SUBTYPE_RICHNESS_rfsi ~ CDD + NDWS + NT + NWLD + P95 + TR, data=as.data.frame(stacked))
 summary(SUBTYPE_RICHNESS_rfsi)
+
+#Question two
+#create socioeconomic variables
+access <- Database$socioeco$acess
+production <- Database$socioeco$ub_npp
+piped_water <-Database$socioeco$medn_piped_water
+wealth <- Database$socioeco$KEN_rwi
+underweight <- Database$socioeco$medn_underweight
+education <- Database$socioeco$medn_difference_edu
+
+#list socioeconomic layers
+economic <- list(access,production,piped_water,wealth,underweight,education)
+economic
+
+#loop through all socioeconomic layers
+#rebuild socioeconomic layers to have same extent as climate layers
+socio_layers <- list()
+for (econ in economic)
+{
+  #obtain original name
+  name <- names(econ)
+  rebuilt_layer <- raster(vals=values(econ),ext=extent(CDD_Mean),crs=crs(CDD_Mean),
+                          nrows=dim(econ)[1],ncols=dim(econ)[2])
+  #resample to obtain similar resolution
+  resampled <- resample(rebuilt_layer,CDD_Mean)
+  stack()
+  names(resampled) <- name
+  socio_layers<- c(socio_layers,resampled)
+}
+socio_layers
+
+#merge socioeconomic list and climate list to have one list
+climate_socio <- c(climate_lyrs,socio_layers)
+climate_socio
+#stack all layers
+stacked_sc <- stack(climate_socio)
+stacked_sc
+
+#linear regression for climate versus socioeconomic
+access_model <- lm(acess ~ CDD + NDWS + NT + NWLD + P95 + TR, data=as.data.frame(stacked_sc))
+summary(access_model)
+production_model <- lm(ub_npp ~ CDD + NDWS + NT + NWLD + P95 + TR, data=as.data.frame(stacked_sc))
+summary(production_model)
+piped_model <- lm(medn_piped_water ~ CDD + NDWS + NT + NWLD + P95 + TR, data=as.data.frame(stacked_sc))
+summary(piped_model)
+wealth_model <- lm(KEN_rwi ~ CDD + NDWS + NT + NWLD + P95 + TR, data=as.data.frame(stacked_sc))
+summary(wealth_model)
+underweight <- lm(medn_underweight ~ CDD + NDWS + NT + NWLD + P95 + TR, data=as.data.frame(stacked_sc))
+summary(underweight)
+education <- lm(medn_difference_edu ~ CDD + NDWS + NT + NWLD + P95 + TR, data=as.data.frame(stacked_sc))
+summary(education)
